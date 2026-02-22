@@ -35,7 +35,7 @@ public class BuyerServiceImpl implements BuyerService {
             throw new RuntimeException("Error: El correo electrónico ya está registrado.");
         }
 
-        // El estatus por defecto es activo y membresía en false (según modelo)
+        // El estatus por defecto es activo y membresía en false
         return buyerRepository.save(buyer);
     }
 
@@ -43,8 +43,7 @@ public class BuyerServiceImpl implements BuyerService {
     @Transactional
     public boolean procesarPagoMembresia(Long buyerId, String metodoPago) {
         return buyerRepository.findById(buyerId).map(buyer -> {
-            // 1. Validar que el pago sea de 10.00 (Lógica de negocio del PDF)
-            // Aquí podrías integrar una pasarela de pago real.
+            // 1. Validar que el pago sea de 10.00
 
             // 2. Marcar membresía como paga
             buyer.setMembresiaPaga(true);
@@ -55,7 +54,7 @@ public class BuyerServiceImpl implements BuyerService {
 
             buyerRepository.save(buyer);
 
-            // Simulación de envío de correo (Requerimiento del PDF)
+            // Simulación de envío de correo
             System.out.println("SISTEMA: Pago de membresía exitoso para " + buyer.getNombre());
             System.out.println("SISTEMA: Enviando código [" + nuevoCodigo + "] al correo " + buyer.getEmail());
 
