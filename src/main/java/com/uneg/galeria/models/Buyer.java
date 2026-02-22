@@ -1,4 +1,4 @@
-package com.miguel.galeria.models;
+package com.uneg.galeria.models;
 
 import jakarta.persistence.*;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package com.miguel.galeria;
+package com.uneg.galeria;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

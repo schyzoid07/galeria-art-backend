@@ -1,4 +1,4 @@
-package com.miguel.galeria;
+package com.uneg.galeria;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

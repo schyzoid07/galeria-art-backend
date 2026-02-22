@@ -1,6 +1,6 @@
-package com.miguel.galeria.repositories;
+package com.uneg.galeria.repositories;
 
-import com.miguel.galeria.models.Art;
+import com.uneg.galeria.models.Art;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import java.util.List;

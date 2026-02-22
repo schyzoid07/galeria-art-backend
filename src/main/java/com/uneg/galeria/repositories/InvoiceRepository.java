@@ -1,8 +1,8 @@
-package com.miguel.galeria.repositories;
+package com.uneg.galeria.repositories;
 
 
 
-import com.miguel.galeria.models.Invoice;
+import com.uneg.galeria.models.Invoice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
