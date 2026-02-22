@@ -1,0 +1,112 @@
+package com.uneg.galeria.services.impl;
+
+
+
+import com.uneg.galeria.models.Buyer;
+import com.uneg.galeria.models.UserAnswers;
+import com.uneg.galeria.repositories.BuyerRepository;
+import com.uneg.galeria.repositories.UserAnswersRepository;
+import com.uneg.galeria.services.BuyerService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
+
+@Service
+public class BuyerServiceImpl implements BuyerService {
+
+    @Autowired
+    private BuyerRepository buyerRepository;
+
+    @Autowired
+    private UserAnswersRepository userAnswersRepository;
+
+    @Override
+    @Transactional
+    public Buyer registrarComprador(Buyer buyer) {
+        // Validación: El login y el email deben ser únicos
+        if (buyerRepository.existsByLogin(buyer.getLogin())) {
+            throw new RuntimeException("Error: El nombre de usuario ya está en uso.");
+        }
+        if (buyerRepository.existsByEmail(buyer.getEmail())) {
+            throw new RuntimeException("Error: El correo electrónico ya está registrado.");
+        }
+
+        // El estatus por defecto es activo y membresía en false (según modelo)
+        return buyerRepository.save(buyer);
+    }
+
+    @Override
+    @Transactional
+    public boolean procesarPagoMembresia(Long buyerId, String metodoPago) {
+        return buyerRepository.findById(buyerId).map(buyer -> {
+            // 1. Validar que el pago sea de 10.00 (Lógica de negocio del PDF)
+            // Aquí podrías integrar una pasarela de pago real.
+
+            // 2. Marcar membresía como paga
+            buyer.setMembresiaPaga(true);
+
+            // 3. Generar código de seguridad aleatorio de 10 caracteres
+            String nuevoCodigo = generarCodigoAleatorio(10);
+            buyer.setCodigoSeguridad(nuevoCodigo);
+
+            buyerRepository.save(buyer);
+
+            // Simulación de envío de correo (Requerimiento del PDF)
+            System.out.println("SISTEMA: Pago de membresía exitoso para " + buyer.getNombre());
+            System.out.println("SISTEMA: Enviando código [" + nuevoCodigo + "] al correo " + buyer.getEmail());
+
+            return true;
+        }).orElseThrow(() -> new RuntimeException("Comprador no encontrado con ID: " + buyerId));
+    }
+
+    @Override
+    public String recuperarCodigoSeguridad(String email, List<String> respuestasUsuario) {
+        // 1. Buscar al comprador
+        Buyer buyer = buyerRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("No existe un usuario asociado a ese correo."));
+
+        // 2. Obtener las respuestas de seguridad guardadas
+        List<UserAnswers> respuestasCorrectas = userAnswersRepository.findByUsuarioId(buyer.getId());
+
+        // 3. Validar que tenga las 3 respuestas configuradas
+        if (respuestasCorrectas.size() < 3) {
+            throw new RuntimeException("El usuario no ha configurado sus preguntas de seguridad.");
+        }
+
+        // 4. Comparar respuestas (ignorando mayúsculas/minúsculas y espacios)
+        for (int i = 0; i < respuestasCorrectas.size(); i++) {
+            String guardada = respuestasCorrectas.get(i).getRespuesta().trim().toLowerCase();
+            String ingresada = respuestasUsuario.get(i).trim().toLowerCase();
+
+            if (!guardada.equals(ingresada)) {
+                throw new RuntimeException("Validación fallida: Una o más respuestas no coinciden.");
+            }
+        }
+
+        // 5. Si pasa la validación, devuelve el código
+        return buyer.getCodigoSeguridad();
+    }
+
+    @Override
+    public Optional<Buyer> buscarPorLogin(String login) {
+        return buyerRepository.findByLogin(login);
+    }
+
+    /**
+     * Método utilitario para generar el código alfanumérico
+     */
+    private String generarCodigoAleatorio(int longitud) {
+        String caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        StringBuilder sb = new StringBuilder();
+        Random rnd = new Random();
+        while (sb.length() < longitud) {
+            int index = (int) (rnd.nextFloat() * caracteres.length());
+            sb.append(caracteres.charAt(index));
+        }
+        return sb.toString();
+    }
+}
