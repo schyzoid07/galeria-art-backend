@@ -12,4 +12,6 @@ public interface InvoiceService {
 
     // Resumen total de facturación
     Double calcularTotalRecaudado(LocalDateTime inicio, LocalDateTime fin);
+
+    List<Invoice> obtenerTodas();
 }

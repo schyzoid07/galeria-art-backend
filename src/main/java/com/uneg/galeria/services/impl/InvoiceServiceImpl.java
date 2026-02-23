@@ -83,4 +83,9 @@ public class InvoiceServiceImpl implements InvoiceService {
                 .mapToDouble(Invoice::getTotal)
                 .sum();
     }
+
+    @Override
+    public List<Invoice> obtenerTodas() {
+        return invoiceRepository.findAll();
+    }
 }
