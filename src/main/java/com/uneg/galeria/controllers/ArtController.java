@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/arts")
-@CrossOrigin(origins = "http://localhost:3000") // Permite que tu Next.js se conecte
+@CrossOrigin(origins = "http://localhost:3000")
 public class ArtController {
 
     @Autowired
