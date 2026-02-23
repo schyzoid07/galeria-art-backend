@@ -1,0 +1,38 @@
+package com.uneg.galeria.controllers;
+
+import com.uneg.galeria.models.Invoice;
+import com.uneg.galeria.services.InvoiceService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
+
+@RestController
+@RequestMapping("/api/invoices")
+@CrossOrigin(origins = "http://localhost:3000")
+public class InvoiceController {
+
+    @Autowired
+    private InvoiceService invoiceService;
+
+    // Procesar una venta (El Admin ingresa los IDs y el código del cliente)
+    @PostMapping("/sell")
+    public ResponseEntity<Invoice> createInvoice(@RequestBody Map<String, Object> request) {
+        Long obraId = Long.valueOf(request.get("obraId").toString());
+        Long compradorId = Long.valueOf(request.get("compradorId").toString());
+        Long adminId = Long.valueOf(request.get("adminId").toString());
+        String codigo = (String) request.get("codigoSeguridad");
+        String direccion = (String) request.get("direccion");
+
+        return ResponseEntity.ok(invoiceService.crearFactura(obraId, compradorId, adminId, codigo, direccion));
+    }
+
+    // Reporte de todas las ventas
+    @GetMapping("/report")
+    public ResponseEntity<List<Invoice>> getAllInvoices() {
+        return ResponseEntity.ok(invoiceService.obtenerTodas());
+    }
+}
