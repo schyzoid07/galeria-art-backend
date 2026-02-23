@@ -54,7 +54,7 @@ public class BuyerServiceImpl implements BuyerService {
             MembershipPayment pago = new MembershipPayment();
             pago.setComprador(buyer);
             pago.setMetodoPago(metodoPago);
-            pago.setMonto(10.0); // Monto fijo según requerimiento
+            pago.setMonto(10.0); // Monto fijo
             pago.setFechaPago(LocalDateTime.now());
 
             // Guardamos el registro en la tabla membership_payment
@@ -67,7 +67,7 @@ public class BuyerServiceImpl implements BuyerService {
             String nuevoCodigo = generarCodigoAleatorio(10);
             buyer.setCodigoSeguridad(nuevoCodigo);
 
-            // Guardamos los cambios en el comprador (ahora tiene membresía true y su código)
+            // Guardamos los cambios en el comprador
             buyerRepository.save(buyer);
 
             // Simulación de envío de correo (Requerimiento del PDF)
