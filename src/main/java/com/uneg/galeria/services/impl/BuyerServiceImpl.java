@@ -76,7 +76,7 @@ public class BuyerServiceImpl implements BuyerService {
             throw new RuntimeException("El usuario no ha configurado sus preguntas de seguridad.");
         }
 
-        // 4. Comparar respuestas (ignorando mayúsculas/minúsculas y espacios)
+        // 4. Comparar respuestas
         for (int i = 0; i < respuestasCorrectas.size(); i++) {
             String guardada = respuestasCorrectas.get(i).getRespuesta().trim().toLowerCase();
             String ingresada = respuestasUsuario.get(i).trim().toLowerCase();
