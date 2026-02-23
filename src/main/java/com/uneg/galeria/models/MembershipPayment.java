@@ -14,7 +14,7 @@ public class MembershipPayment {
     private Long id;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "id_comprador", nullable = false)
     private Buyer comprador;
 

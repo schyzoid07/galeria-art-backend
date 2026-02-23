@@ -3,14 +3,17 @@ package com.uneg.galeria.services.impl;
 
 
 import com.uneg.galeria.models.Buyer;
+import com.uneg.galeria.models.MembershipPayment;
 import com.uneg.galeria.models.UserAnswers;
 import com.uneg.galeria.repositories.BuyerRepository;
+import com.uneg.galeria.repositories.MembershipPaymentRepository;
 import com.uneg.galeria.repositories.UserAnswersRepository;
 import com.uneg.galeria.services.BuyerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -23,6 +26,9 @@ public class BuyerServiceImpl implements BuyerService {
 
     @Autowired
     private UserAnswersRepository userAnswersRepository;
+
+    @Autowired
+    private MembershipPaymentRepository membershipPaymentRepository;
 
     @Override
     @Transactional
@@ -43,19 +49,30 @@ public class BuyerServiceImpl implements BuyerService {
     @Transactional
     public boolean procesarPagoMembresia(Long buyerId, String metodoPago) {
         return buyerRepository.findById(buyerId).map(buyer -> {
-            // 1. Validar que el pago sea de 10.00
 
-            // 2. Marcar membresía como paga
+            // 1. Crear el registro histórico del pago (Auditoría)
+            MembershipPayment pago = new MembershipPayment();
+            pago.setComprador(buyer);
+            pago.setMetodoPago(metodoPago);
+            pago.setMonto(10.0); // Monto fijo según requerimiento
+            pago.setFechaPago(LocalDateTime.now());
+
+            // Guardamos el registro en la tabla membership_payment
+            membershipPaymentRepository.save(pago);
+
+            // 2. Marcar membresía como paga en el perfil del comprador
             buyer.setMembresiaPaga(true);
 
             // 3. Generar código de seguridad aleatorio de 10 caracteres
             String nuevoCodigo = generarCodigoAleatorio(10);
             buyer.setCodigoSeguridad(nuevoCodigo);
 
+            // Guardamos los cambios en el comprador (ahora tiene membresía true y su código)
             buyerRepository.save(buyer);
 
-            // Simulación de envío de correo
-            System.out.println("SISTEMA: Pago de membresía exitoso para " + buyer.getNombre());
+            // Simulación de envío de correo (Requerimiento del PDF)
+            System.out.println("SISTEMA: Registro de pago #" + pago.getId() + " creado exitosamente.");
+            System.out.println("SISTEMA: El comprador " + buyer.getNombre() + " ahora está activo.");
             System.out.println("SISTEMA: Enviando código [" + nuevoCodigo + "] al correo " + buyer.getEmail());
 
             return true;
