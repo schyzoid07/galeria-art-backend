@@ -1,8 +1,8 @@
-###
+###Prueba para obtener todas las obras
 GET http://localhost:8080/api/arts
 
 
-###
+###prueba de creacion de usuario
 POST http://localhost:8080/api/buyers/register
 Content-Type: application/json
 
@@ -15,4 +15,12 @@ Content-Type: application/json
   "telefono": "04141234567",
   "direccionEnvio": "Ciudad Guayana, Bolivar",
   "datosTarjetaMask": "4540-XXXX-XXXX-1234"
+}
+
+###Prueba para pagar membresia
+POST http://localhost:8080/api/buyers/2/pay-membership
+Content-Type: application/json
+
+{
+  "metodoPago": "Tarjeta de Crédito"
 }
