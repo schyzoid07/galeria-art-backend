@@ -125,4 +125,9 @@ public class BuyerServiceImpl implements BuyerService {
         }
         return sb.toString();
     }
+
+    @Override
+    public List<Buyer> listarTodos() {
+        return buyerRepository.findAll();
+    }
 }

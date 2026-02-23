@@ -65,4 +65,9 @@ public class BuyerController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
     }
+    //5. para admins, obtener todos los compradores
+    @GetMapping
+    public List<Buyer> getAllBuyers() {
+        return buyerService.findAll(); // O el método que tengas en tu service para listar
+    }
 }

@@ -11,4 +11,5 @@ public interface BuyerService {
     boolean procesarPagoMembresia(Long buyerId, String metodoPago);
     String recuperarCodigoSeguridad(String email, List<String> respuestas);
     Optional<Buyer> buscarPorLogin(String login);
+    List<Buyer> listarTodos();
 }
