@@ -1,2 +1,18 @@
 ###
 GET http://localhost:8080/api/arts
+
+
+###
+POST http://localhost:8080/api/buyers/register
+Content-Type: application/json
+
+{
+  "nombre": "Miguel",
+  "apellido": "Usuario",
+  "login": "manuel01",
+  "password": "password123",
+  "email": "miguel@test.com",
+  "telefono": "04141234567",
+  "direccionEnvio": "Ciudad Guayana, Bolivar",
+  "datosTarjetaMask": "4540-XXXX-XXXX-1234"
+}
