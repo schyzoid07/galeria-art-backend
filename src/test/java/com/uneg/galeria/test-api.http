@@ -18,9 +18,32 @@ Content-Type: application/json
 }
 
 ###Prueba para pagar membresia
-POST http://localhost:8080/api/buyers/2/pay-membership
+POST http://localhost:8080/api/buyers/1/pay-membership
 Content-Type: application/json
 
 {
   "metodoPago": "Tarjeta de Crédito"
+}
+
+### Obtener todos los compradores (Para ver si Miguel tiene su código)
+GET http://localhost:8080/api/buyers
+
+
+###prueba de Recuperacion de codigo
+### Escenario 1: Recuperación Exitosa
+POST http://localhost:8080/api/buyers/recover-code
+Content-Type: application/json
+
+{
+  "email": "miguel@test.com",
+  "respuestas": ["Bobby", "caracas", "escuela bolivar"]
+}
+
+### Escenario 2: Error por respuestas incorrectas
+POST http://localhost:8080/api/buyers/recover-code
+Content-Type: application/json
+
+{
+  "email": "miguel@test.com",
+  "respuestas": ["Gato", "Error", "Falso"]
 }

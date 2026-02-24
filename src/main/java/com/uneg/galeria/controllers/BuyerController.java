@@ -2,6 +2,7 @@ package com.uneg.galeria.controllers;
 
 import com.uneg.galeria.models.Buyer;
 import com.uneg.galeria.services.BuyerService;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,16 +46,30 @@ public class BuyerController {
 
     // 3. Recuperar Código de Seguridad (Validando las 3 respuestas)
     @PostMapping("/recover-code")
-    public ResponseEntity<String> recoverCode(@RequestBody Map<String, Object> request) {
-        String email = (String) request.get("email");
-        List<String> respuestas = (List<String>) request.get("respuestas");
-
+    public ResponseEntity<?> recoverCode(@RequestBody RecoveryRequest request) {
         try {
-            String codigo = buyerService.recuperarCodigoSeguridad(email, respuestas);
-            return ResponseEntity.ok(codigo);
+            String codigo = buyerService.recuperarCodigoSeguridad(request.getEmail(), request.getRespuestas());
+            return ResponseEntity.ok("Validación exitosa. Su código es: " + codigo);
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+            // Si las respuestas no coinciden o el usuario no existe, devolvemos el error
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
+    }
+
+    // clase complementaria para recovery
+    public static class RecoveryRequest {
+        private String email;
+        private List<String> respuestas;
+
+        // IMPORTANTÍSIMO: Constructor vacío explícito
+        public RecoveryRequest() {
+        }
+
+        // Getters y Setters
+        public String getEmail() { return email; }
+        public void setEmail(String email) { this.email = email; }
+        public List<String> getRespuestas() { return respuestas; }
+        public void setRespuestas(List<String> respuestas) { this.respuestas = respuestas; }
     }
 
     // 4. Login simple para Comprador
@@ -68,6 +83,6 @@ public class BuyerController {
     //5. para admins, obtener todos los compradores
     @GetMapping
     public List<Buyer> getAllBuyers() {
-        return buyerService.findAll(); // O el método que tengas en tu service para listar
+        return buyerService.listarTodos(); // O el método que tengas en tu service para listar
     }
 }
