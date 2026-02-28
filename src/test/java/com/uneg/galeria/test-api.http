@@ -7,11 +7,11 @@ POST http://localhost:8080/api/buyers/register
 Content-Type: application/json
 
 {
-  "nombre": "Miguel",
+  "nombre": "rhixeidys",
   "apellido": "Usuario",
-  "login": "manuel01",
+  "login": "rhixeidys01",
   "password": "password123",
-  "email": "miguel@test.com",
+  "email": "rhixeidys@test.com",
   "telefono": "04141234567",
   "direccionEnvio": "Ciudad Guayana, Bolivar",
   "datosTarjetaMask": "4540-XXXX-XXXX-1234"
@@ -35,7 +35,7 @@ POST http://localhost:8080/api/buyers/recover-code
 Content-Type: application/json
 
 {
-  "email": "miguel@test.com",
+  "email": "rhixeidys01@test.com",
   "respuestas": ["Bobby", "caracas", "escuela bolivar"]
 }
 
@@ -44,7 +44,7 @@ POST http://localhost:8080/api/buyers/recover-code
 Content-Type: application/json
 
 {
-  "email": "miguel@test.com",
+  "email": "rhixeidys01@test.com",
   "respuestas": ["Gato", "Error", "Falso"]
 }
 
@@ -55,4 +55,16 @@ Content-Type: application/json
 {
   "login": "miguel01",
   "password": "password123"
+}
+
+
+###Prueba para comprar la primera obra
+POST http://localhost:8080/api/orders/purchase
+
+{
+  "obraId": 1,
+  "compradorId": 1,
+  "adminId": 2,
+  "metodoPago": "Transferencia Bancaria",
+  "direccionEnvio": "Av. Principal, Edif. Galería, Apto 4B"
 }
