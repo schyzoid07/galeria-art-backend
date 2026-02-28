@@ -112,9 +112,8 @@ public class BuyerServiceImpl implements BuyerService {
         return buyerRepository.findByLogin(login);
     }
 
-    /**
-     * Método utilitario para generar el código alfanumérico
-     */
+
+     //Método utilitario para generar el código alfanumérico
     private String generarCodigoAleatorio(int longitud) {
         String caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         StringBuilder sb = new StringBuilder();
@@ -129,5 +128,14 @@ public class BuyerServiceImpl implements BuyerService {
     @Override
     public List<Buyer> listarTodos() {
         return buyerRepository.findAll();
+    }
+
+    //Metodo para la logica del login
+    @Override
+    public Buyer login(String login, String password) {
+        // Buscamos al comprador por su login de usuario
+        return buyerRepository.findByLogin(login) // Asegúrate de tener este método en el Repo
+                .filter(buyer -> buyer.getPassword().equals(password))
+                .orElseThrow(() -> new RuntimeException("Credenciales incorrectas o usuario no encontrado"));
     }
 }

@@ -12,4 +12,5 @@ public interface BuyerService {
     String recuperarCodigoSeguridad(String email, List<String> respuestas);
     Optional<Buyer> buscarPorLogin(String login);
     List<Buyer> listarTodos();
+    Buyer login(String login, String password);
 }

@@ -61,7 +61,7 @@ public class BuyerController {
         private String email;
         private List<String> respuestas;
 
-        // IMPORTANTÍSIMO: Constructor vacío explícito
+        // Constructor vacío explícito
         public RecoveryRequest() {
         }
 
@@ -74,15 +74,32 @@ public class BuyerController {
 
     // 4. Login simple para Comprador
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Map<String, String> credentials) {
-        return buyerService.buscarPorLogin(credentials.get("login"))
-                .filter(b -> b.getPassword().equals(credentials.get("password"))) // En prod usar BCrypt
+    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+        // Esta es la lógica que tenías en la función vieja:
+        // 1. Buscamos por login
+        // 2. Filtramos por password
+        // 3. Mapeamos a la respuesta
+        return buyerService.buscarPorLogin(request.getLogin())
+                .filter(b -> b.getPassword().equals(request.getPassword()))
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
     }
     //5. para admins, obtener todos los compradores
     @GetMapping
     public List<Buyer> getAllBuyers() {
-        return buyerService.listarTodos(); // O el método que tengas en tu service para listar
+        return buyerService.listarTodos();
+    }
+
+    //6. DTO para no dar todo el objeto User
+    public static class LoginRequest {
+        private String login;
+        private String password;
+
+        public LoginRequest() {}
+        // Getters y Setters
+        public String getLogin() { return login; }
+        public void setLogin(String login) { this.login = login; }
+        public String getPassword() { return password; }
+        public void setPassword(String password) { this.password = password; }
     }
 }

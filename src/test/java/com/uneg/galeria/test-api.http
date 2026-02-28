@@ -47,3 +47,12 @@ Content-Type: application/json
   "email": "miguel@test.com",
   "respuestas": ["Gato", "Error", "Falso"]
 }
+
+###Prueba e Login
+POST http://localhost:8080/api/buyers/login
+Content-Type: application/json
+
+{
+  "login": "miguel01",
+  "password": "password123"
+}
