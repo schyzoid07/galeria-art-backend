@@ -14,6 +14,4 @@ public interface InvoiceService {
     Double calcularTotalRecaudado(LocalDateTime inicio, LocalDateTime fin);
 
     List<Invoice> obtenerTodas();
-
-    boolean registrarVenta(Long obraId, Long compradorId);
 }

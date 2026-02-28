@@ -16,28 +16,27 @@ import java.util.Map;
 public class OrderController {
 
     @Autowired
-    private InvoiceService invoiceService; // El que creamos antes
+    private InvoiceService invoiceService;
 
     @PostMapping("/purchase")
-    public ResponseEntity<String> purchaseArt(@RequestBody Map<String, Object> request) {
+    public ResponseEntity<?> purchaseArt(@RequestBody Map<String, Object> request) {
         try {
-            // Extraemos los IDs del JSON que enviaste en Thunder Client
+            // Extraemos los datos exactos que pide el método crearFactura
             Long obraId = Long.valueOf(request.get("obraId").toString());
             Long compradorId = Long.valueOf(request.get("compradorId").toString());
+            Long adminId = Long.valueOf(request.get("adminId").toString());
+            String codigoSeguridad = (String) request.get("codigoSeguridad");
+            String direccion = (String) request.get("direccion");
 
-            // Aquí llamamos a la lógica para generar la factura
-            // Nota: El service debe validar que la obra esté 'Disponible'
-            boolean exito = invoiceService.registrarVenta(obraId, compradorId);
+            // Llamada al método original
+            Invoice factura = invoiceService.crearFactura(obraId, compradorId, adminId, codigoSeguridad, direccion);
 
-            if (exito) {
-                return ResponseEntity.ok("Compra exitosa. Factura generada.");
-            } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body("La obra no está disponible o los datos son incorrectos.");
-            }
+            return ResponseEntity.ok(factura); // Devolvemos la factura completa en JSON
+        } catch (RuntimeException e) {
+            // Aquí capturamos los "throw new RuntimeException" (Membresía no paga, código inválido, etc.)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error al procesar la compra: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
         }
     }
 }
