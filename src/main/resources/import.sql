@@ -14,8 +14,8 @@ INSERT INTO painting (id_obra, tecnica, estilo) VALUES (1, 'Óleo', 'Postimpresi
 -- 3. USUARIO RHIXEIDYS (ID Usuario: 1)
 INSERT INTO users (login, password, nombre, apellido, email, telefono, activo) VALUES ('rhixeidys01', 'password123', 'rhixeidys', 'Usuario', 'rhixeidys@test.com', '04141234567', TRUE);
 
--- 4. RHIXEIDYS COMO COMPRADOR (Relacionado al ID 1)
--- IMPORTANTE: Iniciamos con membresia_paga en FALSE para que puedas probar el proceso de pago.
+-- 4. RHIXEIDYS COMO COMPRADOR (Relacionado al ID 1) con la membresia no pagada
+
 INSERT INTO buyer (id_usuario, datos_tarjeta_mask, membresia_paga, direccion_envio, codigo_seguridad) VALUES (1, '4540-XXXX-XXXX-1234', FALSE, 'Ciudad Guayana, Bolivar', 'SIN_PAGAR');
 
 -- 5. RESPUESTAS DE SEGURIDAD PARA RHIXEIDYS (Relacionadas al user_id: 1)
@@ -25,8 +25,7 @@ INSERT INTO user_answers (user_id, question_id, respuesta) VALUES (1, 3, 'Escuel
 
 --6. Crear un admin y asegurar que la primera obra siempre este disponible
 
-INSERT INTO users (login, password, nombre, apellido, email, activo)
-VALUES ('admin_ana', 'admin123', 'Ana', 'Admin', 'admin@galeria.com', TRUE);
+INSERT INTO users (login, password, nombre, apellido, email, activo) VALUES ('admin_ana', 'admin123', 'Ana', 'Admin', 'admin@galeria.com', TRUE);
 INSERT INTO admin (id_usuario, cargo) VALUES (2, 'Gerente de Ventas'); -- Asumiendo ID 2
 
 UPDATE art SET estatus = 'Disponible' WHERE id = 1;
