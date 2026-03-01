@@ -1,6 +1,9 @@
 -- 1. CATÁLOGOS BASE
 INSERT INTO genre (nombre) VALUES ('Pintura');
 INSERT INTO genre (nombre) VALUES ('Escultura');
+INSERT INTO genre (nombre) VALUES ('Fotografia');
+INSERT INTO genre (nombre) VALUES ('Orfebreria');
+INSERT INTO genre (nombre) VALUES ('Ceramica');
 
 INSERT INTO security_question (pregunta) VALUES ('¿Nombre de tu primera mascota?');
 INSERT INTO security_question (pregunta) VALUES ('¿Ciudad de nacimiento de tu madre?');
