@@ -3,7 +3,7 @@ FROM gradle:9.3-jdk25 AS build
 COPY --chown=gradle:gradle . /home/gradle/src
 WORKDIR /home/gradle/src
 # Construimos el .jar
-RUN gradle bootJar --no-daemon -x test
+RUN gradle clean processResources bootJar --no-daemon -x test
 
 # ETAPA 2: Imagen ligera para correr la aplicación
 FROM eclipse-temurin:25-jdk-alpine
