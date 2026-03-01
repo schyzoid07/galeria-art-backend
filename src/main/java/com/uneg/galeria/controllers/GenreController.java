@@ -1,0 +1,21 @@
+package com.uneg.galeria.controllers;
+
+import com.uneg.galeria.models.Genre;
+import com.uneg.galeria.services.GenreService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/genres")
+@CrossOrigin(origins = "http://localhost:3000")
+public class GenreController {
+
+    @Autowired
+    private GenreService genreService;
+
+    @GetMapping
+    public List<Genre> getAll() {
+        return genreService.getAllGenres();
+    }
+}
