@@ -35,3 +35,9 @@ out/
 
 ### VS Code ###
 .vscode/
+
+# Docker
+.docker/
+# Ignorar los datos reales de la base de datos (se guardan en el volumen local)
+postgres_data/
+galeria_db_data/

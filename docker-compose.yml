@@ -1,0 +1,31 @@
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: postgres-spring-boot
+    restart: always
+    environment:
+      POSTGRES_USER: Miguel
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: museo_db
+    ports:
+      - "5332:5432"
+    volumes:
+      - galeria_db_data:/var/lib/postgresql/data
+      - ./init-db:/docker-entrypoint-initdb.d
+
+  backend:
+    build: .
+    container_name: galeria-app-backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/museo_db
+      - SPRING_DATASOURCE_USERNAME=Miguel
+      - SPRING_DATASOURCE_PASSWORD=password
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=create
+
+volumes:
+  galeria_db_data:
