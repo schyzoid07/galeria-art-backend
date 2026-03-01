@@ -12,6 +12,12 @@ services:
     volumes:
       - galeria_db_data:/var/lib/postgresql/data
       - ./init-db:/docker-entrypoint-initdb.d
+    # prueba para corroborar que la bd esta lista para recibir solicitudes
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U Miguel -d museo_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   backend:
     build: .
@@ -25,7 +31,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/museo_db
       - SPRING_DATASOURCE_USERNAME=Miguel
       - SPRING_DATASOURCE_PASSWORD=password
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=create
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
 
 volumes:
   galeria_db_data:
